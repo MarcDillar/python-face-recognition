@@ -7,7 +7,7 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup(
-    name='face-recognition',
+    name='simple-face-recognizer',
     version='0.1.0',
     description='Simple face recognition for teaching purposes',
     long_description=readme,
