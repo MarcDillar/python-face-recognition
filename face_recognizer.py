@@ -94,9 +94,14 @@ class FaceRecognizer:
         Returns:
             faces_names (list): list of the names of all the identified faces
             img (numpy.ndarray): image with all faces highlighted by rectangles
+        
+        Raises:
+            ValueError: if the image path passed as an argument isn't correct
         '''
         img = cv2.imread(image_path, 1)
-
+        if img is None:
+            raise ValueError
+            
         faces_locations = fr.face_locations(img)
         unknown_faces_images = fr.face_encodings(img, faces_locations)
 
@@ -111,7 +116,7 @@ class FaceRecognizer:
         return faces_names, img
 
 if __name__ == '__main__':
-    faces_names, image = FaceRecognizer(library_folder="C:\\Users\\marcd\\OneDrive\\Documents\\faces").classify("test.jpg")
+    faces_names, image = FaceRecognizer().classify("test.jpg")
 
     cv2.imshow('image', image)
     cv2.waitKey(0)
