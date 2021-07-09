@@ -16,5 +16,5 @@ setup(
     author_email='marc.dillar@gmail.com',
     url='https://github.com/MarcDillar/python-face-recognition',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs', 'examples'))
+    packages=find_packages(exclude=('tests', 'docs', 'examples', 'faces'))
 )
