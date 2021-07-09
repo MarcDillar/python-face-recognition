@@ -130,3 +130,7 @@ dmypy.json
 
 # VS Code
 .vscode
+
+faces
+*.jpg
+*.png
