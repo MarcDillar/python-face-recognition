@@ -101,7 +101,7 @@ class FaceRecognizer:
         img = cv2.imread(image_path, 1)
         if img is None:
             raise ValueError
-            
+
         faces_locations = fr.face_locations(img)
         unknown_faces_images = fr.face_encodings(img, faces_locations)
 
@@ -113,10 +113,4 @@ class FaceRecognizer:
 
             self.__draw_faces_rectangle(img, faces_locations, faces_names)
 
-        return faces_names, img
-
-if __name__ == '__main__':
-    faces_names, image = FaceRecognizer().classify("test.jpg")
-
-    cv2.imshow('image', image)
-    cv2.waitKey(0)
+        return faces_names, img   
