@@ -9,6 +9,7 @@ import face_recognition as fr
 import cv2
 import numpy as np
 
+
 class FaceRecognizer:
     '''
     Class providing basic face recognition methods
@@ -33,7 +34,8 @@ class FaceRecognizer:
         Create a FaceRecognizer instance
 
         Parameters:
-            library_folder (str, optionnal): path to the folder containing the images of the library
+            library_folder (str, optionnal):
+                path to the folder containing the images of the library
         '''
 
         self.library_names, self.library_images = [], []
@@ -41,7 +43,13 @@ class FaceRecognizer:
         for folder in os.listdir(library_folder):
             for file in os.listdir(os.path.join(library_folder, folder)):
                 if file.endswith(".jpg") or file.endswith(".png"):
-                    face = fr.load_image_file(os.path.join(library_folder, folder, file))
+                    face = fr.load_image_file(
+                        os.path.join(
+                            library_folder,
+                            folder,
+                            file
+                        )
+                    )
                     encoding = fr.face_encodings(face)[0]
                     self.library_names.append(folder)
                     self.library_images.append(encoding)
@@ -57,7 +65,12 @@ class FaceRecognizer:
             The face's name if the face was identified. Else, Unknown.
         '''
 
-        best_match_index = np.argmin(fr.face_distance(self.library_images, face_image))
+        best_match_index = np.argmin(
+            fr.face_distance(
+                self.library_images,
+                face_image
+            )
+        )
 
         matches = fr.compare_faces(self.library_images, face_image)
 
@@ -66,27 +79,60 @@ class FaceRecognizer:
 
         return "Unknown"
 
-    def __draw_faces_rectangle(self, image, faces_locations, faces_names, font=cv2.FONT_HERSHEY_DUPLEX):
+    def __draw_faces_rectangle(
+        self,
+        image,
+        faces_locations,
+        faces_names,
+        font=cv2.FONT_HERSHEY_DUPLEX
+    ):
         '''
         Private method. Draws rectangles around the faces present in an image
 
         Parameters:
-            image (numpy.ndarray): original image
-            faces_locations (list): location of all faces identified in the image
-            faces_names (list): list of the names associated to each face
-            font (int, optionnal): cv2 font used to write the faces names on the picture
+            image (numpy.ndarray):
+                original image
+            faces_locations (list):
+                location of all faces identified in the image
+            faces_names (list):
+                list of the names associated to each face
+            font (int, optionnal):
+                cv2 font used to write the faces names on the picture
         '''
-        for (top, right, bottom, left), name in zip(faces_locations, faces_names):
+        faces = zip(faces_locations, faces_names)
+        for (top, right, bottom, left), name in faces:
             # Draw a box around the face
-            cv2.rectangle(image, (left-20, top-20), (right+20, bottom+20), (255, 0, 0), 2)
+            cv2.rectangle(
+                image,
+                (left - 20, top - 20),
+                (right + 20, bottom + 20),
+                (255, 0, 0),
+                2
+            )
 
             # Draw a label with a name below the face
-            cv2.rectangle(image, (left-20, bottom -15), (right+20, bottom+20), (255, 0, 0), cv2.FILLED)
-            cv2.putText(image, name, (left -20, bottom + 15), font, 1.0, (255, 255, 255), 2)
+            cv2.rectangle(
+                image,
+                (left - 20, bottom - 15),
+                (right + 20, bottom + 20),
+                (255, 0, 0),
+                cv2.FILLED
+            )
+
+            cv2.putText(
+                image,
+                name,
+                (left - 20, bottom + 15),
+                font,
+                1.0,
+                (255, 255, 255),
+                2
+            )
 
     def classify(self, image_path):
         '''
-        Finds the faces in a picture, finds their names and draws a rectangle around them
+        Finds the faces in a picture,
+        finds their names and draws a rectangle around them.
 
         Parameters:
             image_path (str): path to the image that needs to be analyzed
@@ -94,7 +140,7 @@ class FaceRecognizer:
         Returns:
             faces_names (list): list of the names of all the identified faces
             img (numpy.ndarray): image with all faces highlighted by rectangles
-        
+
         Raises:
             ValueError: if the image path passed as an argument isn't correct
         '''
@@ -113,4 +159,4 @@ class FaceRecognizer:
 
             self.__draw_faces_rectangle(img, faces_locations, faces_names)
 
-        return faces_names, img   
+        return faces_names, img
